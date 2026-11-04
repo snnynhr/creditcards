@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="plat" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#94A3B8"/>
+    </linearGradient>
+    <linearGradient id="sapphire" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Back Card (Gold) -->
+  <g transform="translate(5, 7) rotate(-14, 26, 17)">
+    <rect x="0" y="0" width="52" height="34" rx="5.5" fill="url(#gold)" stroke="#0F172A" stroke-width="1.6"/>
+  </g>
+
+  <!-- Middle Card (Platinum) -->
+  <g transform="translate(6, 14) rotate(-5, 26, 17)">
+    <rect x="0" y="0" width="52" height="34" rx="5.5" fill="url(#plat)" stroke="#0F172A" stroke-width="1.6"/>
+  </g>
+
+  <!-- Front Card (Sapphire) -->
+  <g transform="translate(7, 22) rotate(4, 26, 17)">
+    <rect x="0" y="0" width="52" height="34" rx="5.5" fill="url(#sapphire)" stroke="#0F172A" stroke-width="1.8"/>
+    <rect x="6.5" y="9" width="11.5" height="9" rx="2" fill="url(#gold)" stroke="#0F172A" stroke-width="0.8"/>
+    <rect x="6.5" y="23.5" width="16" height="3" rx="1.5" fill="#DBEAFE"/>
+    <rect x="26" y="23.5" width="11" height="3" rx="1.5" fill="#93C5FD"/>
+    <circle cx="43" cy="13.5" r="4" fill="#60A5FA" opacity="0.9"/>
+  </g>
+</svg>

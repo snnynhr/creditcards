@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Credit Card Portfolio, Effective Annual Fee Calculator, and Live Welcome Offer Tracker." />
+  <title>Credit Card Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-header" id="page-header">
+      <div class="brand-block">
+        <h1 id="main-heading">Credit Card Portfolio</h1>
+      </div>
+      <div class="header-actions">
+        <div class="header-btn-group">
+          <button type="button" class="drawer-toggle-chip" id="btn-expand-all">Expand All Benefits  ▾</button>
+          <button type="button" class="drawer-toggle-chip" id="btn-collapse-all">Collapse All Benefits  ▴</button>
+        </div>
+        <span class="header-actions-divider" aria-hidden="true"></span>
+        <div class="header-btn-group">
+          <button type="button" class="drawer-toggle-chip" id="btn-import-valuations" title="Load card statuses and benefit valuations from a JSON file">Import Valuations</button>
+          <button type="button" class="drawer-toggle-chip" id="btn-export-valuations" title="Download current card statuses and benefit valuations as valuations.json">Export Valuations</button>
+          <button type="button" class="drawer-toggle-chip" id="btn-reset-valuations" title="Clear browser overrides and reload defaults from valuations.json">Reset to File</button>
+        </div>
+        <input type="file" id="input-import-valuations" accept="application/json,.json" style="display: none;" />
+      </div>
+    </header>
+
+    <section class="summary-strip" id="portfolio-summary" aria-label="Portfolio Summary Metrics">
+      <div class="summary-tile" id="tile-owned-count">
+        <div class="summary-label">Owned Cards</div>
+        <div class="summary-value" id="val-owned-count">0</div>
+        <div class="summary-sub" id="sub-owned-count">0 cards on watchlist</div>
+      </div>
+      <div class="summary-tile" id="tile-gross-fees">
+        <div class="summary-label">Owned Gross Fees</div>
+        <div class="summary-value" id="val-gross-fees">$0</div>
+        <div class="summary-sub">Before statement credits</div>
+      </div>
+      <div class="summary-tile" id="tile-benefits-used">
+        <div class="summary-label">Owned Benefits Value</div>
+        <div class="summary-value" id="val-benefits-used">$0</div>
+        <div class="summary-sub">Your assigned yearly value</div>
+      </div>
+      <div class="summary-tile" id="tile-net-fee">
+        <div class="summary-label">Owned Net Effective Fee</div>
+        <div class="summary-value" id="val-net-fee">$0</div>
+        <div class="summary-sub" id="sub-net-fee">Gross fees minus used perks</div>
+      </div>
+      <div class="summary-tile" id="tile-best-candidate">
+        <div class="summary-label">Best Unowned Net Fee</div>
+        <div class="summary-value" id="val-best-candidate">—</div>
+        <div class="summary-sub" id="sub-best-candidate">Lowest effective annual cost</div>
+      </div>
+    </section>
+
+    <main class="cards-list" id="cards-list-container" aria-live="polite">
+      <section class="cards-section-group" id="owned-cards-section" aria-label="Owned Cards">
+        <div class="section-group-header">
+          <div class="section-group-title-wrap">
+            <h2 class="section-group-title">Owned Cards</h2>
+            <span class="section-group-count" id="owned-section-count">0</span>
+          </div>
+          <div class="section-group-right">
+            <button type="button" class="drawer-toggle-chip" id="btn-toggle-owned-section">Hide Section  ▴</button>
+          </div>
+        </div>
+        <div class="cards-section-items" id="owned-cards-container"></div>
+      </section>
+
+      <section class="cards-section-group" id="prospective-cards-section" aria-label="Prospective Cards">
+        <div class="section-group-header">
+          <div class="section-group-title-wrap">
+            <h2 class="section-group-title" id="prospective-section-title">Prospective Cards</h2>
+            <span class="section-group-count" id="prospective-section-count">0</span>
+          </div>
+          <div class="section-group-subtitle" id="prospective-section-subtitle">Watchlist &amp; unowned cards for comparison</div>
+        </div>
+
+        <div class="controls-bar" id="controls-bar" aria-label="Filter and Sort Prospective Cards">
+          <div class="filter-pills" id="filter-pills-group" role="tablist">
+            <button type="button" class="pill-btn active" id="filter-all" data-filter="all">All Prospective</button>
+            <button type="button" class="pill-btn" id="filter-target" data-filter="target">Watchlist</button>
+            <button type="button" class="pill-btn" id="filter-amex" data-filter="American Express">Amex</button>
+            <button type="button" class="pill-btn" id="filter-chase" data-filter="Chase">Chase</button>
+            <button type="button" class="pill-btn" id="filter-citi" data-filter="Citi">Citi</button>
+            <button type="button" class="pill-btn" id="filter-capone" data-filter="Capital One">Capital One</button>
+            <button type="button" class="pill-btn" id="filter-bofa" data-filter="Bank of America">Bank of America</button>
+            <button type="button" class="pill-btn" id="filter-wf" data-filter="Wells Fargo">Wells Fargo</button>
+            <button type="button" class="pill-btn" id="filter-barclays" data-filter="Barclays">Barclays</button>
+            <button type="button" class="pill-btn" id="filter-hidden" data-filter="hidden">Hidden (0)</button>
+          </div>
+          <div class="sort-controls">
+            <input type="search" class="search-input" id="search-cards-input" placeholder="Search" aria-label="Search prospective cards or benefits" />
+            <label for="sort-select">Sort by:</label>
+            <select class="select-input" id="sort-select">
+              <option value="group">Grouped by Family (Default)</option>
+              <option value="net-asc">Lowest Net Effective Fee</option>
+              <option value="fee-desc">Highest Gross Annual Fee</option>
+              <option value="fee-asc">Lowest Gross Annual Fee</option>
+              <option value="yr1-desc">Highest 1st-Year Net Value</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="cards-section-items" id="prospective-cards-container"></div>
+      </section>
+
+      <section class="cards-section-group" id="resources-section" aria-label="Offer Trackers and Resources">
+        <div class="section-group-header">
+          <div class="section-group-title-wrap">
+            <h2 class="section-group-title">Offer Trackers &amp; Resources</h2>
+          </div>
+          <div class="section-group-subtitle">Master sign-up bonus lists, historical offer charts, and stackable portal promos</div>
+        </div>
+        <div class="resources-grid">
+          <a class="resource-card" href="https://www.doctorofcredit.com/best-current-credit-card-sign-bonuses/" target="_blank" rel="noopener noreferrer">
+            <div class="resource-card-title">Doctor of Credit — Best Current Sign-Up Bonuses ↗</div>
+            <div class="resource-card-desc">Continuously updated master list of elevated public links, in-branch promos, NLL offers, and recent offer changelog.</div>
+          </a>
+          <a class="resource-card" href="https://frequentmiler.com/best-credit-card-offers/" target="_blank" rel="noopener noreferrer">
+            <div class="resource-card-title">Frequent Miler — Best Credit Card Offers ↗</div>
+            <div class="resource-card-desc">Side-by-side comparison of current welcome bonuses, first-year net value estimates, and recent expired highs.</div>
+          </a>
+          <a class="resource-card" href="https://www.uscreditcardguide.com/en/" target="_blank" rel="noopener noreferrer">
+            <div class="resource-card-title">US Credit Card Guide — Reviews &amp; Historical Offer Charts ↗</div>
+            <div class="resource-card-desc">Detailed card guides with historical sign-up bonus timelines and application rules (card-specific links are also on each card above).</div>
+          </a>
+          <a class="resource-card" href="https://www.rakuten.com/credit-cards" target="_blank" rel="noopener noreferrer">
+            <div class="resource-card-title">Rakuten — Stackable Credit Card Portal Bonuses ↗</div>
+            <div class="resource-card-desc">Stack extra cash/MR/Bilt points ($150–$425) on top of standard welcome offers for eligible Bank of America and Citi cards.</div>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Historical Welcome Offers Modal -->
+  <div class="hist-modal-overlay hidden" id="offer-history-modal" role="dialog" aria-modal="true" aria-labelledby="hist-modal-title">
+    <div class="hist-modal-card">
+      <div class="hist-modal-header">
+        <div class="hist-modal-title-group">
+          <div class="hist-modal-eyebrow-row">
+            <span class="issuer-badge" id="hist-modal-issuer">Issuer</span>
+            <h2 class="hist-modal-title" id="hist-modal-title">Card — Historical Welcome Offers</h2>
+          </div>
+          <p class="hist-modal-subtitle" id="hist-modal-subtitle">Parsed from USCCG</p>
+        </div>
+        <button type="button" class="hist-modal-close-btn" id="hist-modal-close" aria-label="Close modal">✕</button>
+        <div class="hist-modal-header-right">
+          <span class="hist-kpi-pill hist-kpi-current" id="hist-modal-current-pill">Current: —</span>
+          <span class="hist-kpi-pill hist-kpi-peak" id="hist-modal-peak-pill">Peak: —</span>
+        </div>
+      </div>
+
+      <!-- Live Hover Readout Bar -->
+      <div class="hist-readout-bar">
+        <div class="hist-readout-left">
+          <span class="hist-era-period" id="hist-era-period">—</span>
+          <div class="hist-era-metric">
+            <span class="hist-dot hist-dot-bonus"></span>
+            <span class="hist-era-label">Sign-Up Bonus:</span>
+            <strong class="hist-era-bonus" id="hist-era-bonus">—</strong>
+          </div>
+          <div class="hist-era-metric">
+            <span class="hist-dot hist-dot-spend"></span>
+            <span class="hist-era-label">Min Spend:</span>
+            <strong class="hist-era-spend" id="hist-era-spend">—</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dual-Axis Interactive SVG Step Chart -->
+      <div class="hist-chart-container">
+        <div class="hist-chart-legend-row">
+          <div class="hist-legend-items">
+            <span class="hist-legend-item">
+              <span class="hist-legend-line hist-legend-line-bonus"></span>
+              Sign-Up Bonus (Left Axis)
+            </span>
+            <span class="hist-legend-item">
+              <span class="hist-legend-line hist-legend-line-spend"></span>
+              Minimum Spend Requirement $ (Right Axis)
+            </span>
+          </div>
+          <a class="official-card-link" id="hist-modal-usccg-link" href="https://www.uscreditcardguide.com/en/" target="_blank" rel="noopener noreferrer">View USCCG Review ↗</a>
+        </div>
+        <svg id="hist-svg-chart" viewBox="0 0 760 280" class="hist-svg-chart"></svg>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

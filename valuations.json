@@ -1,0 +1,83 @@
+{
+  "cardStatus": {
+    "delta-gold": "target",
+    "chase-sapphire-reserve": "target",
+    "chase-sapphire-preferred": "owned",
+    "chase-freedom-flex": "owned",
+    "united-quest": "owned",
+    "citi-custom-cash": "owned",
+    "citi-costco-anywhere": "target",
+    "citi-aa-platinum-select": "owned",
+    "capital-one-venture-x": "owned"
+  },
+  "benefitValues": {
+    "amex-platinum": {
+      "resy": 50,
+      "airline-fee": 30,
+      "uber-cash": 100,
+      "ge-precheck": 30,
+      "lounge-access": 30
+    },
+    "amex-platinum-schwab": {
+      "cs-uber-cash": 100,
+      "cs-ge-precheck": 30,
+      "cs-lounge-access": 30
+    },
+    "delta-platinum": {
+      "dp-stays": 150
+    },
+    "delta-gold": {
+      "dg-rideshare": 20,
+      "dg-stays": 100,
+      "dg-takeoff15": 20
+    },
+    "chase-sapphire-reserve": {
+      "csr-travel": 300,
+      "csr-lounge": 40
+    },
+    "chase-sapphire-preferred": {
+      "csp-hotel": 80,
+      "csp-doordash": 20,
+      "csp-appletv": 20,
+      "csp-ge": 30,
+      "csp-prot": 20
+    },
+    "united-quest": {
+      "uq-travelbank": 200,
+      "uq-award-disc": 100,
+      "uq-rideshare": 40,
+      "uq-bags": 30,
+      "uq-ge": 20
+    },
+    "citi-strata-elite": {
+      "cse-hotel": 200,
+      "cse-splurge": 200,
+      "cse-ge": 30
+    },
+    "citi-aa-globe": {
+      "aaglobe-companion": 200,
+      "aaglobe-splurge": 100,
+      "aaglobe-ge": 30
+    },
+    "capital-one-venture-x": {
+      "vx-travel": 300,
+      "vx-anniv": 100,
+      "vx-lounges": 25,
+      "vx-ge": 30,
+      "vx-cdw": 10
+    },
+    "bofa-premium-elite": {
+      "bofae-airline": 150,
+      "bofae-lifestyle": 150,
+      "bofae-pp": 100,
+      "bofae-ge": 30
+    },
+    "atmos-summit": {
+      "atmos-status": 100,
+      "atmos-ge": 30
+    },
+    "wf-autograph-journey": {
+      "wfaj-air": 50
+    }
+  }
+}
